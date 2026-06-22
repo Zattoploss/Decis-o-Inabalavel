@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Decisão Inabalável - Painel de Clareza</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+              950: '#451a03',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            sora: ['Sora', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0b0f19;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-title {
+      font-family: 'Sora', sans-serif;
+    }
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+    /* Smooth interactive transitions */
+    .page-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="min-h-screen w-full flex items-center justify-center p-0 sm:p-6 md:p-12 bg-slate-950 text-slate-100 selection:bg-brand-500 selection:text-slate-950">
+
+  <!-- CONTAINER DO APLICATIVO (RESPONSIVO DESKTOP & MOBILE) -->
+  <div class="w-full max-w-4xl bg-slate-900/90 border border-slate-800/80 rounded-none sm:rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.7)] flex flex-col relative overflow-hidden ring-1 ring-slate-700/30">
+    
+    <!-- CABEÇALHO DO PAINEL (WIDGET INTEGRADO) -->
+    <header class="bg-slate-900/95 border-b border-slate-800 px-6 py-4 flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between sm:items-center z-10 shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center shadow-lg shadow-brand-500/20">
+          <i data-lucide="shield-check" class="w-6 h-6 text-slate-950 stroke-[2.5]"></i>
+        </div>
+        <div>
+          <h1 class="font-title text-base md:text-lg font-extrabold tracking-tight bg-gradient-to-r from-brand-300 via-brand-100 to-slate-200 bg-clip-text text-transparent">DECISÃO INABALÁVEL</h1>
+          <p class="text-[10px] text-brand-400 uppercase tracking-widest font-bold -mt-0.5">Clareza para escolher. Força para sustentar.</p>
+        </div>
+      </div>
+      
+      <!-- Indicador de Progresso e Botão de Reinício -->
+      <div class="flex items-center gap-3 self-end sm:self-auto">
+        <span id="step-badge" class="text-xs font-bold bg-slate-850 border border-slate-750 text-slate-300 px-3.5 py-1.5 rounded-full">Passo 1 de 6</span>
+        <button onclick="confirmReset()" class="h-9 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center gap-2 transition-colors border border-slate-700/60 active:scale-95 text-xs font-medium" title="Recomeçar do Zero">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Reiniciar</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- BARRA DE PROGRESSO SUPERIOR -->
+    <div class="w-full h-1 bg-slate-950 shrink-0 relative z-10">
+      <div id="progress-bar" class="h-full bg-gradient-to-r from-brand-500 via-brand-400 to-amber-300 transition-all duration-300" style="width: 16.66%"></div>
+    </div>
+
+    <!-- ÁREA DE CONTEÚDO DINÂMICA (AUTO-HEIGHT) -->
+    <!-- Sem limites rígidos de altura para evitar barras de rolagem duplicadas nos embeds -->
+    <main class="flex-1 p-6 md:p-8 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 relative">
+      
+      <!-- PASSO 1: AS ESCOLHAS -->
+      <section id="step-1" class="step-section page-transition space-y-5">
+        <div class="space-y-1">
+          <span class="text-xs uppercase font-bold text-brand-400 tracking-wider">O Ponto de Partida</span>
+          <h2 class="text-xl md:text-2xl font-title font-bold text-white">Quais opções você está avaliando?</h2>
+          <p class="text-sm text-slate-400 leading-relaxed">Defina claramente as alternativas que geram dúvida ou paralisia em sua mente. Você pode comparar duas escolhas básicas ou adicionar uma terceira opção para uma análise ainda mais profunda.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <!-- Escolha 1 -->
+          <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-4.5 space-y-2 focus-within:border-brand-500/50 transition-colors">
+            <label class="text-xs font-semibold text-brand-400 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span> Escolha 1
+            </label>
+            <input type="text" id="choice1-input" placeholder="Ex: Aceitar a proposta de emprego nova" 
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-brand-500 placeholder-slate-650 transition-colors">
+          </div>
+
+          <!-- Escolha 2 -->
+          <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-4.5 space-y-2 focus-within:border-brand-500/50 transition-colors">
+            <label class="text-xs font-semibold text-brand-400 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span> Escolha 2
+            </label>
+            <input type="text" id="choice2-input" placeholder="Ex: Continuar no emprego atual" 
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-brand-500 placeholder-slate-650 transition-colors">
+          </div>
+        </div>
+
+        <!-- Escolha 3 (Escondida por padrão) -->
+        <div id="choice3-container" class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-4.5 space-y-2 focus-within:border-brand-500/50 transition-all duration-300 hidden">
+          <div class="flex justify-between items-center">
+            <label class="text-xs font-semibold text-brand-400 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span> Escolha 3
+            </label>
+            <button onclick="toggleChoice3(false)" class="text-xs text-red-400 hover:text-red-300 font-semibold flex items-center gap-1 transition-colors">
+              <i data-lucide="trash-2" class="w-4 h-4"></i> Remover esta escolha
+            </button>
+          </div>
+          <input type="text" id="choice3-input" placeholder="Ex: Iniciar um projeto solo paralelo" 
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-brand-500 placeholder-slate-650 transition-colors">
+        </div>
+
+        <!-- Botão para adicionar a Escolha 3 -->
+        <div class="flex justify-center pt-2">
+          <button id="add-choice3-btn" onclick="toggleChoice3(true)" class="w-full md:w-auto md:px-8 py-3 rounded-xl border border-dashed border-slate-700 hover:border-brand-500/50 text-slate-400 hover:text-brand-400 text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+            <i data-lucide="plus-circle" class="w-4.5 h-4.5"></i> Adicionar uma terceira escolha
+          </button>
+        </div>
+
+        <div class="bg-amber-950/20 border border-amber-900/30 rounded-2xl p-4 flex gap-3 text-xs text-amber-200/90 leading-relaxed mt-4">
+          <i data-lucide="lightbulb" class="w-5 h-5 text-brand-400 shrink-0"></i>
+          <p>Para obter os melhores resultados possíveis do algoritmo de clareza, tente definir escolhas bem distintas e completas no primeiro passo.</p>
+        </div>
+      </section>
+
+      <!-- PASSO 2: PRÓS E CONTRAS -->
+      <section id="step-2" class="step-section page-transition space-y-5 hidden">
+        <div class="space-y-1">
+          <span class="text-xs uppercase font-bold text-brand-400 tracking-wider">Mapeamento Racional</span>
+          <h2 class="text-xl md:text-2xl font-title font-bold text-white">Prós e Contras</h2>
+          <p class="text-sm text-slate-400">Liste os principais prós e contras que vêm à mente para cada caminho. Use quebras de linha simples se quiser listar múltiplos pontos.</p>
+        </div>
+
+        <div id="pros-cons-inputs" class="space-y-6 pt-2">
+          <!-- Injetado dinamicamente via JS -->
+        </div>
+      </section>
+
+      <!-- PASSO 3: DISTANCIAMENTO TEMPORAL (10-10-10) -->
+      <section id="step-3" class="step-section page-transition space-y-5 hidden">
+        <div class="space-y-1">
+          <span class="text-xs uppercase font-bold text-brand-400 tracking-wider">Perspectiva Ampliada</span>
+          <h2 class="text-xl md:text-2xl font-title font-bold text-white">A Regra Temporal dos 10-10-10</h2>
+          <p class="text-sm text-slate-400">Diminua o peso da ansiedade de curto prazo. Reflita sobre o impacto e os sentimentos relacionados a cada caminho nestes dois prazos de tempo distantes.</p>
+        </div>
+
+        <div id="temporal-inputs" class="space-y-6 pt-2">
+          <!-- Injetado dinamicamente via JS -->
+        </div>
+      </section>
+
+      <!-- PASSO 4: VALORES PESSOAIS -->
+      <section id="step-4" class="step-section page-transition space-y-5 hidden">
+        <div class="space-y-1">
+          <span class="text-xs uppercase font-bold text-brand-400 tracking-wider">Alinhamento de Alma</span>
+          <h2 class="text-xl md:text-2xl font-title font-bold text-white">Alinhamento com seus Valores Fundamentais</h2>
+          <p class="text-sm text-slate-400">Atribua de 1 a 5 estrelas em cada fator para mensurar o quão alinhado cada opção está com os seus pilares de vida mais importantes.</p>
+        </div>
+
+        <!-- Lista de Valores Pré-definidos com avaliações por escolha -->
+        <div id="values-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <!-- Injetado dinamicamente via JS -->
+        </div>
+      </section>
+
+      <!-- PASSO 5: PIORES CENÁRIOS & CONSOLO -->
+      <section id="step-5" class="step-section page-transition space-y-5 hidden">
+        <div class="space-y-1">
+          <span class="text-xs uppercase font-bold text-brand-400 tracking-wider">Antídoto do Medo</span>
+          <h2 class="text-xl md:text-2xl font-title font-bold text-white">Mitigação do Pior Cenário Real</h2>
+          <p class="text-sm text-slate-400">Nossa mente tende a superdimensionar os medos. Racionalize: qual é o pior cenário concreto que pode acontecer e como você agiria para consertá-lo?</p>
+        </div>
+
+        <div id="scenarios-inputs" class="space-y-6 pt-2">
+          <!-- Injetado dinamicamente via JS -->
+        </div>
+      </section>
+
+      <!-- PASSO 6: VEREDITO & COMPROMISSO -->
+      <section id="step-6" class="step-section page-transition space-y-5 hidden">
+        <div class="space-y-1">
+          <span class="text-xs uppercase font-bold text-brand-400 tracking-wider">A Hora da Verdade</span>
+          <h2 class="text-xl md:text-2xl font-title font-bold text-white">Análise Matemática do Veredito</h2>
+          <p class="text-sm text-slate-400">O gráfico abaixo revela a pontuação refinada de clareza decisória com base nos seus prós/contras, alinhamento de valores, prazos e controle de riscos.</p>
+        </div>
+
+        <!-- Resultados e Rankings -->
+        <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Resultados dinâmicos calculados pelo motor de pesos -->
+        </div>
+
+        <!-- Linha divisória -->
+        <hr class="border-slate-800">
+
+        <!-- Compromisso Inabalável -->
+        <div class="bg-gradient-to-br from-brand-950/20 to-slate-900 border border-brand-500/20 rounded-2xl p-5 space-y-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-400">
+              <i data-lucide="pen-tool" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-title text-sm md:text-base font-bold text-brand-200">Selar seu Compromisso com a Ação</h3>
+          </div>
+
+          <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
+            As decisões só se tornam reais através da iniciativa física. Defina o seu primeiro passo concreto e marque uma data limite para executá-lo.
+          </p>
+
+          <div class="space-y-3.5 pt-1">
+            <div class="space-y-1">
+              <label class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Qual será o seu primeiro passo real para iniciar este novo rumo?</label>
+              <input type="text" id="action-step" placeholder="Ex: Marcar reunião para comunicar minha transição de cargo" 
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs md:text-sm text-slate-100 focus:outline-none focus:border-brand-500 placeholder-slate-700 transition-colors">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Data Limite de Ação</label>
+                <input type="date" id="action-date" 
+                  class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs md:text-sm text-slate-100 focus:outline-none focus:border-brand-500 transition-colors">
+              </div>
+              <div class="space-y-1">
+                <label class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Hora Limite de Ação</label>
+                <input type="time" id="action-time" 
+                  class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs md:text-sm text-slate-100 focus:outline-none focus:border-brand-500 transition-colors">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões de compartilhamento / cópia -->
+        <div class="pt-2 flex flex-col sm:flex-row gap-3">
+          <button onclick="copyReport()" class="flex-1 py-3.5 bg-brand-500 hover:bg-brand-600 active:scale-[0.98] text-slate-950 font-bold text-xs md:text-sm rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20 transition-all">
+            <i data-lucide="copy" class="w-4 h-4"></i> Copiar Relatório de Tomada de Decisão
+          </button>
+        </div>
+
+        <div id="copy-success-alert" class="hidden text-center text-xs md:text-sm text-emerald-400 font-semibold bg-emerald-950/20 border border-emerald-900/30 py-3 rounded-xl transition-all">
+          ✓ Relatório completo copiado para a área de transferência!
+        </div>
+      </section>
+
+    </main>
+
+    <!-- CONTROLADORES DA NAVEGAÇÃO INFERIOR (DESKTOP & MOBILE RESPONSIVE) -->
+    <footer class="bg-slate-900 border-t border-slate-800 px-6 py-4 flex gap-4 justify-between items-center z-10 shrink-0">
+      <button id="prev-btn" onclick="goToPrevStep()" class="flex-1 max-w-[200px] py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs md:text-sm rounded-xl flex items-center justify-center gap-2 border border-slate-700/50 transition-all active:scale-95 disabled:opacity-40 disabled:pointer-events-none">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar
+      </button>
+      
+      <button id="next-btn" onclick="goToNextStep()" class="flex-1 max-w-[240px] py-3.5 bg-brand-500 hover:bg-brand-400 text-slate-950 font-bold text-xs md:text-sm rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-brand-500/15 transition-all active:scale-95">
+        Avançar <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
+    </footer>
+
+    <!-- MODAL DE CONFIRMAÇÃO DE REINÍCIO (PREMIUM MODAL COUTOUT) -->
+    <div id="confirm-reset-modal" class="absolute inset-0 bg-black/75 backdrop-blur-sm z-30 flex items-center justify-center p-4 hidden transition-opacity duration-300">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 w-full max-w-[340px] shadow-2xl space-y-4 scale-95 transition-transform duration-300">
+        <div class="w-12 h-12 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto">
+          <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+        </div>
+        <div class="text-center space-y-1.5">
+          <h4 class="font-title text-base md:text-lg font-bold text-white">Deseja apagar os dados?</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">Esta ação é irreversível e resetará todo o progresso do seu ciclo de clareza.</p>
+        </div>
+        <div class="flex gap-3">
+          <button onclick="closeResetModal()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl border border-slate-700/50 transition-colors">
+            Cancelar
+          </button>
+          <button onclick="resetApp()" class="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white font-bold text-xs rounded-xl transition-colors">
+            Resetar Tudo
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ESTADO GLOBAL DO APLICATIVO
+    let currentStep = 1;
+    const totalSteps = 6;
+    let hasChoice3 = false;
+
+    // Valores padrão sugeridos para alinhamento
+    const defaultValues = [
+      { id: 'financial', name: 'Liberdade Financeira', desc: 'Geração de renda, estabilidade, prosperidade e patrimônio saudável' },
+      { id: 'growth', name: 'Desenvolvimento e Desafios', desc: 'Aprendizado constante, evolução técnica, de carreira ou de mentalidade' },
+      { id: 'autonomy', name: 'Autonomia e Flexibilidade', desc: 'Poder de decisão, controle sobre o próprio tempo, espaço e regras' },
+      { id: 'purpose', name: 'Propósito e Impacto', desc: 'Sentimento de realização íntima, valor agregado e utilidade genuína' },
+      { id: 'balance', name: 'Paz Mental e Bem-Estar', desc: 'Qualidade de vida, saúde física, equilíbrio familiar e menos estresse' }
+    ];
+
+    // Estrutura de dados das escolhas
+    let choices = {
+      choice1: { name: "", pros: "", cons: "", t10m: "", t10y: "", valueRatings: {}, worstScenario: "", mitigation: "" },
+      choice2: { name: "", pros: "", cons: "", t10m: "", t10y: "", valueRatings: {}, worstScenario: "", mitigation: "" },
+      choice3: { name: "", pros: "", cons: "", t10m: "", t10y: "", valueRatings: {}, worstScenario: "", mitigation: "" }
+    };
+
+    // Inicialização ao carregar a página
+    window.onload = function() {
+      // Carregar dados salvos no localStorage (se existirem)
+      loadState();
+
+      // Renderizar conteúdo inicial dos passos dinâmicos
+      renderStep2ProsCons();
+      renderStep3Temporal();
+      renderStep4Values();
+      renderStep5Scenarios();
+
+      // Renderizar interface baseada no estado atual
+      updateStepUI();
+      lucide.createIcons();
+    };
+
+    // Gerenciador do botão de Escolha 3
+    function toggleChoice3(visible) {
+      hasChoice3 = visible;
+      const container = document.getElementById('choice3-container');
+      const addBtn = document.getElementById('add-choice3-btn');
+      
+      if (visible) {
+        container.classList.remove('hidden');
+        addBtn.classList.add('hidden');
+      } else {
+        container.classList.add('hidden');
+        addBtn.classList.remove('hidden');
+        document.getElementById('choice3-input').value = ""; // Limpa
+      }
+
+      // Re-renderiza passos dependentes para readequar a 2 ou 3 escolhas
+      renderStep2ProsCons();
+      renderStep3Temporal();
+      renderStep4Values();
+      renderStep5Scenarios();
+      lucide.createIcons();
+      saveState();
+    }
+
+    // RENDERIZAÇÃO: PASSO 2 (PRÓS E CONTRAS)
+    // No computador exibe side-by-side, no celular empilha
+    function renderStep2ProsCons() {
+      const container = document.getElementById('pros-cons-inputs');
+      container.innerHTML = "";
+
+      const activeChoices = getActiveChoices();
+      activeChoices.forEach((ch, idx) => {
+        const valueId = `choice${idx+1}`;
+        const placeholderPro = `Ex:\n- Alta flexibilidade de horários\n- Melhoria salarial imediata`;
+        const placeholderCon = `Ex:\n- Maior demanda por viagens de trabalho\n- Desgaste inicial de adaptação`;
+
+        container.innerHTML += `
+          <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4">
+            <div class="flex items-center gap-2.5">
+              <span class="text-xs font-extrabold px-2.5 py-1 bg-brand-500 text-slate-950 rounded-full">#${idx+1}</span>
+              <h3 class="text-sm md:text-base font-title font-bold text-white text-ellipsis overflow-hidden whitespace-nowrap">
+                ${ch.name || 'Escolha ' + (idx+1)}
+              </h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="text-[10px] uppercase font-bold text-emerald-400 flex items-center gap-1 tracking-wider">
+                  <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Pontos Positivos (Prós)
+                </label>
+                <textarea id="${valueId}-pros" rows="4" placeholder="${placeholderPro}"
+                  class="w-full bg-slate-950 border border-slate-800/80 rounded-xl px-3.5 py-2.5 text-xs md:text-sm text-slate-100 focus:outline-none focus:border-emerald-500 placeholder-slate-700 transition-colors">${choices[valueId].pros}</textarea>
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-[10px] uppercase font-bold text-rose-400 flex items-center gap-1 tracking-wider">
+                  <i data-lucide="minus-circle" class="w-3.5 h-3.5"></i> Pontos Negativos (Contras)
+                </label>
+                <textarea id="${valueId}-cons" rows="4" placeholder="${placeholderCon}"
+                  class="w-full bg-slate-950 border border-slate-800/80 rounded-xl px-3.5 py-2.5 text-xs md:text-sm text-slate-100 focus:outline-none focus:border-rose-500 placeholder-slate-700 transition-colors">${choices[valueId].cons}</textarea>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // RENDERIZAÇÃO: PASSO 3 (TEMPORAL)
+    function renderStep3Temporal() {
+      const container = document.getElementById('temporal-inputs');
+      container.innerHTML = "";
+
+      const activeChoices = getActiveChoices();
+      activeChoices.forEach((ch, idx) => {
+        const valueId = `choice${idx+1}`;
+        container.innerHTML += `
+          <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4">
+            <div class="flex items-center gap-2.5 border-b border-slate-800/85 pb-3">
+              <span class="text-xs font-extrabold px-2.5 py-1 bg-brand-500 text-slate-950 rounded-full">#${idx+1}</span>
+              <h3 class="text-sm md:text-base font-title font-bold text-white">${ch.name || 'Escolha ' + (idx+1)}</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Como me sentirei em relação a isso daqui a 10 meses?</label>
+                <input type="text" id="${valueId}-t10m" placeholder="Ex: Estarei mais adaptado e colhendo o faturamento inicial" value="${choices[valueId].t10m}"
+                  class="w-full bg-slate-950 border border-slate-800/80 rounded-xl px-4 py-3 text-xs md:text-sm text-slate-100 focus:outline-none focus:border-brand-500 placeholder-slate-700 transition-colors">
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Como me sentirei em relação a isso daqui a 10 anos?</label>
+                <input type="text" id="${valueId}-t10y" placeholder="Ex: Orgulhoso de ter me desafiado a sair da zona de conforto" value="${choices[valueId].t10y}"
+                  class="w-full bg-slate-950 border border-slate-800/80 rounded-xl px-4 py-3 text-xs md:text-sm text-slate-100 focus:outline-none focus:border-brand-500 placeholder-slate-700 transition-colors">
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // RENDERIZAÇÃO: PASSO 4 (VALORES)
+    function renderStep4Values() {
+      const container = document.getElementById('values-inputs');
+      container.innerHTML = "";
+
+      const activeChoices = getActiveChoices();
+
+      defaultValues.forEach((val) => {
+        let optionsHTML = "";
+        
+        activeChoices.forEach((ch, idx) => {
+          const valueId = `choice${idx+1}`;
+          const currentRating = choices[valueId].valueRatings[val.id] || 0;
+          
+          optionsHTML += `
+            <div class="flex items-center justify-between bg-slate-950/80 border border-slate-800/80 rounded-xl px-4 py-3">
+              <span class="text-xs md:text-sm text-slate-300 font-semibold max-w-[150px] truncate">
+                ${ch.name || 'Escolha ' + (idx+1)}
+              </span>
+              <div class="flex items-center gap-1" id="stars-${valueId}-${val.id}">
+                ${[1, 2, 3, 4, 5].map(num => `
+                  <button onclick="rateValue('${valueId}', '${val.id}', ${num})" 
+                    class="p-1 focus:outline-none transition-transform hover:scale-115 active:scale-125">
+                    <i data-lucide="star" class="w-4.5 h-4.5 ${num <= currentRating ? 'fill-brand-500 text-brand-500' : 'text-slate-700'}"></i>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        });
+
+        container.innerHTML += `
+          <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-3.5">
+            <div class="space-y-1">
+              <h4 class="text-sm md:text-base font-bold text-white flex items-center gap-1.5 font-title">
+                <i data-lucide="heart" class="w-4.5 h-4.5 text-brand-400"></i> ${val.name}
+              </h4>
+              <p class="text-[11px] text-slate-450 leading-relaxed">${val.desc}</p>
+            </div>
+            <div class="space-y-2 pt-1">
+              ${optionsHTML}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // Função interna para atualizar a classificação de estrelas
+    function rateValue(choiceId, valueId, rating) {
+      choices[choiceId].valueRatings[valueId] = rating;
+      renderStep4Values();
+      lucide.createIcons();
+      saveState();
+    }
+
+    // RENDERIZAÇÃO: PASSO 5 (PIORES CENÁRIOS)
+    function renderStep5Scenarios() {
+      const container = document.getElementById('scenarios-inputs');
+      container.innerHTML = "";
+
+      const activeChoices = getActiveChoices();
+      activeChoices.forEach((ch, idx) => {
+        const valueId = `choice${idx+1}`;
+        container.innerHTML += `
+          <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4">
+            <div class="flex items-center gap-2.5 border-b border-slate-800 pb-3">
+              <span class="text-xs font-extrabold px-2.5 py-1 bg-brand-500 text-slate-950 rounded-full">#${idx+1}</span>
+              <h3 class="text-sm md:text-base font-title font-bold text-white">${ch.name || 'Escolha ' + (idx+1)}</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="text-[10px] uppercase font-bold text-rose-400 flex items-center gap-1 tracking-wider">
+                  <i data-lucide="alert-triangle" class="w-4 h-4"></i> Qual o pior cenário possível?
+                </label>
+                <input type="text" id="${valueId}-worstScenario" placeholder="Ex: Ficar sem faturamento ou quebrar no 3º mês" value="${choices[valueId].worstScenario}"
+                  class="w-full bg-slate-950 border border-slate-800/80 rounded-xl px-4 py-3 text-xs md:text-sm text-slate-100 focus:outline-none focus:border-rose-500 placeholder-slate-700 transition-colors">
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-[10px] uppercase font-bold text-emerald-400 flex items-center gap-1 tracking-wider">
+                  <i data-lucide="heart-handshake" class="w-4 h-4"></i> Como consertar ou mitigar isso?
+                </label>
+                <input type="text" id="${valueId}-mitigation" placeholder="Ex: Guardar 6 meses de custo fixo como reserva de segurança" value="${choices[valueId].mitigation}"
+                  class="w-full bg-slate-950 border border-slate-800/80 rounded-xl px-4 py-3 text-xs md:text-sm text-slate-100 focus:outline-none focus:border-emerald-500 placeholder-slate-700 transition-colors">
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // RETORNA UM ARRAY COM AS ESCOLHAS QUE ESTÃO ATIVAS NO MOMENTO
+    function getActiveChoices() {
+      const active = [
+        { id: 'choice1', name: document.getElementById('choice1-input')?.value || choices.choice1.name || 'Escolha 1' },
+        { id: 'choice2', name: document.getElementById('choice2-input')?.value || choices.choice2.name || 'Escolha 2' }
+      ];
+      if (hasChoice3) {
+        active.push({ id: 'choice3', name: document.getElementById('choice3-input')?.value || choices.choice3.name || 'Escolha 3' });
+      }
+      return active;
+    }
+
+    // SALVAR DADOS DIGITADOS DOS INPUTS PARA A MEMÓRIA EM CADA TRANSIÇÃO
+    function saveAllInputs() {
+      // Passo 1
+      if (document.getElementById('choice1-input')) choices.choice1.name = document.getElementById('choice1-input').value;
+      if (document.getElementById('choice2-input')) choices.choice2.name = document.getElementById('choice2-input').value;
+      if (hasChoice3 && document.getElementById('choice3-input')) {
+        choices.choice3.name = document.getElementById('choice3-input').value;
+      } else {
+        choices.choice3.name = "";
+      }
+
+      // Passo 2
+      const activeChoices = getActiveChoices();
+      activeChoices.forEach(ch => {
+        const prosEl = document.getElementById(`${ch.id}-pros`);
+        const consEl = document.getElementById(`${ch.id}-cons`);
+        if (prosEl) choices[ch.id].pros = prosEl.value;
+        if (consEl) choices[ch.id].cons = consEl.value;
+      });
+
+      // Passo 3
+      activeChoices.forEach(ch => {
+        const t10mEl = document.getElementById(`${ch.id}-t10m`);
+        const t10yEl = document.getElementById(`${ch.id}-t10y`);
+        if (t10mEl) choices[ch.id].t10m = t10mEl.value;
+        if (t10yEl) choices[ch.id].t10y = t10yEl.value;
+      });
+
+      // Passo 5
+      activeChoices.forEach(ch => {
+        const worstScenarioEl = document.getElementById(`${ch.id}-worstScenario`);
+        const mitigationEl = document.getElementById(`${ch.id}-mitigation`);
+        if (worstScenarioEl) choices[ch.id].worstScenario = worstScenarioEl.value;
+        if (mitigationEl) choices[ch.id].mitigation = mitigationEl.value;
+      });
+
+      saveState();
+    }
+
+    // SALVAR NO LOCALSTORAGE
+    function saveState() {
+      const state = {
+        choices,
+        hasChoice3,
+        currentStep
+      };
+      localStorage.setItem('decisao_inabalavel_v2', JSON.stringify(state));
+    }
+
+    // CARREGAR DO LOCALSTORAGE
+    function loadState() {
+      const saved = localStorage.getItem('decisao_inabalavel_v2');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          choices = parsed.choices || choices;
+          hasChoice3 = parsed.hasChoice3 || false;
+          currentStep = parsed.currentStep || 1;
+
+          // Repovoar Passo 1
+          if (document.getElementById('choice1-input')) document.getElementById('choice1-input').value = choices.choice1.name;
+          if (document.getElementById('choice2-input')) document.getElementById('choice2-input').value = choices.choice2.name;
+          
+          if (hasChoice3) {
+            const c3Input = document.getElementById('choice3-input');
+            if (c3Input) c3Input.value = choices.choice3.name;
+            const container = document.getElementById('choice3-container');
+            const addBtn = document.getElementById('add-choice3-btn');
+            if (container) container.classList.remove('hidden');
+            if (addBtn) addBtn.classList.add('hidden');
+          }
+        } catch (e) {
+          console.warn("Erro ao ler dados salvos.", e);
+        }
+      }
+    }
+
+    // MOTOR DE CÁLCULO E RENDERIZAÇÃO DOS RESULTADOS (PASSO 6)
+    function calculateVeredictAndRender() {
+      const activeChoices = getActiveChoices();
+      const resultsContainer = document.getElementById('results-container');
+      resultsContainer.innerHTML = "";
+
+      let listScores = [];
+
+      activeChoices.forEach(ch => {
+        const choiceData = choices[ch.id];
+        
+        // 1. Prós e Contras (Contagem de Linhas válidas)
+        const prosCount = (choiceData.pros || "").split('\n').filter(l => l.trim().length > 0).length;
+        const consCount = (choiceData.cons || "").split('\n').filter(l => l.trim().length > 0).length;
+        
+        // Balanço: Prós dão pontos positivos, Contras dão pontos negativos
+        const rationalScore = (prosCount * 1.5) - (consCount * 1.2);
+
+        // 2. Alinhamento de Valores (Média das Estrelas, Máximo 5)
+        let totalStars = 0;
+        defaultValues.forEach(val => {
+          totalStars += (choiceData.valueRatings[val.id] || 0);
+        });
+        const valAverage = defaultValues.length > 0 ? (totalStars / defaultValues.length) : 0;
+        const valueScore = valAverage * 4; // Escala máxima: 20 pontos
+
+        // 3. Temporal (Premia preenchimento)
+        const tempScore = (choiceData.t10m ? 3 : 0) + (choiceData.t10y ? 5 : 0);
+
+        // 4. Mitigação do pior cenário (Preenchimento adiciona clareza)
+        const safeScore = (choiceData.worstScenario ? 2 : 0) + (choiceData.mitigation ? 6 : 0);
+
+        // Score Bruto final
+        const rawScore = rationalScore + valueScore + tempScore + safeScore;
+        
+        listScores.push({
+          id: ch.id,
+          name: ch.name || 'Escolha sem nome',
+          rawScore: parseFloat(rawScore.toFixed(1)),
+          details: { prosCount, consCount, valAverage: parseFloat(valAverage.toFixed(1)) }
+        });
+      });
+
+      // Achar menor e maior pontuação para normalizar em porcentagem de Clareza Mental
+      const maxRaw = Math.max(...listScores.map(o => o.rawScore), 1);
+      const minRaw = Math.min(...listScores.map(o => o.rawScore), 0);
+
+      // Normalizar entre 35% e 98% de clareza para manter realista
+      listScores = listScores.map(item => {
+        let clarityPct = 40; // Base padrão de clareza
+        if (maxRaw !== minRaw) {
+          clarityPct = 40 + Math.round(((item.rawScore - minRaw) / (maxRaw - minRaw)) * 55);
+        } else if (item.rawScore > 10) {
+          clarityPct = 75;
+        }
+        return { ...item, clarityPct };
+      });
+
+      // Ordenar do melhor para o pior
+      listScores.sort((a, b) => b.rawScore - a.rawScore);
+
+      // Renderização do ranking visual
+      listScores.forEach((item, idx) => {
+        const isWinner = idx === 0;
+        const rankBadge = idx === 0 ? 'bg-brand-500 text-slate-950 font-black' : 'bg-slate-800 text-slate-400 font-bold';
+        const barColor = isWinner ? 'bg-gradient-to-r from-brand-500 to-amber-300' : 'bg-slate-700';
+        const starRatingString = '★'.repeat(Math.round(item.details.valAverage)) + '☆'.repeat(5 - Math.round(item.details.valAverage));
+
+        resultsContainer.innerHTML += `
+          <div class="bg-slate-900/60 border ${isWinner ? 'border-brand-500/40' : 'border-slate-800'} rounded-2xl p-5 space-y-4 relative overflow-hidden">
+            ${isWinner ? '<div class="absolute top-0 right-0 bg-brand-500 text-slate-950 text-[10px] font-extrabold uppercase px-3.5 py-1 rounded-bl-xl tracking-wider">Altamente Recomendada</div>' : ''}
+            
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg ${rankBadge} flex items-center justify-center text-xs">
+                ${idx + 1}
+              </span>
+              <div class="max-w-[240px]">
+                <h4 class="text-sm md:text-base font-title font-extrabold text-white truncate">${item.name}</h4>
+                <p class="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
+                  Valores: <span class="text-brand-400 font-bold tracking-tight">${starRatingString}</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Barra de progresso de Clareza Mental -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-450 font-medium">Índice de Clareza Decisória</span>
+                <span class="font-bold ${isWinner ? 'text-brand-400' : 'text-slate-300'}">${item.clarityPct}%</span>
+              </div>
+              <div class="w-full h-3 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-slate-850">
+                <div class="h-full rounded-full ${barColor} transition-all duration-500" style="width: ${item.clarityPct}%"></div>
+              </div>
+            </div>
+
+            <!-- Detalhamento rápido do racional -->
+            <div class="grid grid-cols-2 gap-2 text-xs bg-slate-950/40 p-3 rounded-xl border border-slate-800/80">
+              <div class="text-slate-400">
+                Prós listados: <strong class="text-emerald-400">${item.details.prosCount}</strong>
+              </div>
+              <div class="text-slate-400">
+                Contras listados: <strong class="text-rose-400">${item.details.consCount}</strong>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // FLUXO DE NAVEGAÇÃO ENTRE OS PASSOS
+    function updateStepUI() {
+      // Ocultar todas as seções
+      document.querySelectorAll('.step-section').forEach(sec => sec.classList.add('hidden'));
+      
+      // Mostrar seção ativa
+      const currentSection = document.getElementById(`step-${currentStep}`);
+      if (currentSection) {
+        currentSection.classList.remove('hidden');
+      }
+
+      // Atualizar Badge superior e Barra de Progresso
+      document.getElementById('step-badge').innerText = `Passo ${currentStep} de ${totalSteps}`;
+      const progressPct = (currentStep / totalSteps) * 100;
+      document.getElementById('progress-bar').style.width = `${progressPct}%`;
+
+      // Habilitar/Desabilitar botão de Voltar
+      const prevBtn = document.getElementById('prev-btn');
+      if (currentStep === 1) {
+        prevBtn.setAttribute('disabled', 'true');
+      } else {
+        prevBtn.removeAttribute('disabled');
+      }
+
+      // Atualizar rótulo do botão Avançar no passo final
+      const nextBtn = document.getElementById('next-btn');
+      if (currentStep === totalSteps) {
+        nextBtn.innerHTML = `Concluir <i data-lucide="check-circle" class="w-4.5 h-4.5"></i>`;
+      } else {
+        nextBtn.innerHTML = `Avançar <i data-lucide="arrow-right" class="w-4.5 h-4.5"></i>`;
+      }
+
+      // Rolar área de conteúdo para o topo no novo passo
+      document.querySelector('main').scrollTop = 0;
+      lucide.createIcons();
+    }
+
+    function goToNextStep() {
+      if (currentStep < totalSteps) {
+        saveAllInputs();
+        currentStep++;
+        
+        // Atualizar renderizadores dependentes conforme dados novos
+        if (currentStep === 2) renderStep2ProsCons();
+        if (currentStep === 3) renderStep3Temporal();
+        if (currentStep === 4) renderStep4Values();
+        if (currentStep === 5) renderStep5Scenarios();
+        if (currentStep === 6) calculateVeredictAndRender();
+
+        updateStepUI();
+      } else {
+        // Ação de Clique em Concluir
+        saveAllInputs();
+        copyReport();
+      }
+    }
+
+    function goToPrevStep() {
+      if (currentStep > 1) {
+        saveAllInputs();
+        currentStep--;
+        updateStepUI();
+      }
+    }
+
+    // MODAL DE CONFIRMAÇÃO DE RESET DO APP (SEM ALERT OU CONFIRM DO NAVEGADOR)
+    function confirmReset() {
+      document.getElementById('confirm-reset-modal').classList.remove('hidden');
+    }
+
+    function closeResetModal() {
+      document.getElementById('confirm-reset-modal').classList.add('hidden');
+    }
+
+    function resetApp() {
+      localStorage.removeItem('decisao_inabalavel_v2');
+      
+      // Reseta estado local
+      currentStep = 1;
+      hasChoice3 = false;
+      choices = {
+        choice1: { name: "", pros: "", cons: "", t10m: "", t10y: "", valueRatings: {}, worstScenario: "", mitigation: "" },
+        choice2: { name: "", pros: "", cons: "", t10m: "", t10y: "", valueRatings: {}, worstScenario: "", mitigation: "" },
+        choice3: { name: "", pros: "", cons: "", t10m: "", t10y: "", valueRatings: {}, worstScenario: "", mitigation: "" }
+      };
+
+      // Reseta elementos visuais dos inputs diretamente
+      document.getElementById('choice1-input').value = "";
+      document.getElementById('choice2-input').value = "";
+      document.getElementById('choice3-input').value = "";
+      document.getElementById('action-step').value = "";
+      document.getElementById('action-date').value = "";
+      document.getElementById('action-time').value = "";
+
+      const container = document.getElementById('choice3-container');
+      const addBtn = document.getElementById('add-choice3-btn');
+      if (container) container.classList.add('hidden');
+      if (addBtn) addBtn.classList.remove('hidden');
+
+      closeResetModal();
+      
+      // Reconstrói as interfaces dinâmicas em branco
+      renderStep2ProsCons();
+      renderStep3Temporal();
+      renderStep4Values();
+      renderStep5Scenarios();
+
+      updateStepUI();
+    }
+
+    // FUNÇÃO DE CÓPIA DO RELATÓRIO DO COMPROMISSO
+    function copyReport() {
+      const activeChoices = getActiveChoices();
+      
+      let reportText = "=========================================\n";
+      reportText += "🏆 DECISÃO INABALÁVEL - RELATÓRIO DE CLAREZA 🏆\n";
+      reportText += "=========================================\n\n";
+
+      reportText += "► ALTERNATIVAS AVALIADAS:\n";
+      activeChoices.forEach((ch, idx) => {
+        reportText += `- Escolha ${idx+1}: ${ch.name}\n`;
+      });
+      reportText += "\n";
+
+      reportText += "► PERSPECTIVA E ALINHAMENTO POR ESCOLHA:\n";
+      activeChoices.forEach((ch, idx) => {
+        const choiceData = choices[ch.id];
+        reportText += `\n-----------------------------------------\n`;
+        reportText += `Opção #${idx+1}: ${ch.name}\n`;
+        reportText += `-----------------------------------------\n`;
+        reportText += `• Prós:\n${choiceData.pros || 'Nenhum listado'}\n`;
+        reportText += `• Contras:\n${choiceData.cons || 'Nenhum listado'}\n`;
+        reportText += `• Sentimento em 10 meses: ${choiceData.t10m || 'Não preenchido'}\n`;
+        reportText += `• Sentimento em 10 anos: ${choiceData.t10y || 'Não preenchido'}\n`;
+        reportText += `• Pior Cenário: ${choiceData.worstScenario || 'Não mapeado'}\n`;
+        reportText += `• Plano de Mitigação: ${choiceData.mitigation || 'Não mapeado'}\n`;
+      });
+
+      reportText += "\n=========================================\n";
+      reportText += "🔥 COMPROMISSO ATIVO DE AÇÃO 🔥\n";
+      reportText += "=========================================\n";
+      const action = document.getElementById('action-step').value || 'Dar o primeiro passo mapeado no app';
+      const deadlineDate = document.getElementById('action-date').value || 'Sem data definida';
+      const deadlineTime = document.getElementById('action-time').value || 'Sem hora definida';
+
+      reportText += `• Ação imediata: ${action}\n`;
+      reportText += `• Prazo máximo para agir: ${deadlineDate} às ${deadlineTime}\n`;
+      reportText += "\n=========================================\n";
+      reportText += '"A clareza gera força. A ação destrói o medo. Siga com coragem."';
+
+      // Clipboard Copier robusto para iFrame (como o do Google Sites)
+      const tempTextArea = document.createElement('textarea');
+      tempTextArea.value = reportText;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      
+      try {
+        document.execCommand('copy');
+        const alertBox = document.getElementById('copy-success-alert');
+        if (alertBox) {
+          alertBox.classList.remove('hidden');
+          setTimeout(() => {
+            alertBox.classList.add('hidden');
+          }, 4000);
+        }
+      } catch (err) {
+        console.error("Falha ao copiar texto", err);
+      }
+      
+      document.body.removeChild(tempTextArea);
+    }
+  </script>
+</body>
+</html>
